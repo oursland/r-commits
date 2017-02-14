@@ -20,14 +20,19 @@ int main()
 		// [{"deletions":"4","insertions":"5","path":"src/library/base/man/str.Rd"}]
 		int deletions = 0;
 		int insertions = 0;
+		int net = 0;
 		for(json::iterator path = paths.begin(); path != paths.end(); ++path)
 		{
 			deletions += atoi((*path)["deletions"].get<std::string>().c_str());
 			insertions += atoi((*path)["insertions"].get<std::string>().c_str());
+
+			net += insertions;
+			net -= deletions;
 		}
 
 		(*commit)["deletions"] = deletions;
 		(*commit)["insertions"] = insertions;
+		(*commit)["net"] = net;
 	}
 
 	cout << setw(4) << commits << endl;
