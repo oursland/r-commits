@@ -15,24 +15,9 @@ int main()
 
 	for (json::iterator commit = commits.begin(); commit != commits.end(); ++commit)
 	{
-		json paths = (*commit)["paths"];
-
-		// [{"deletions":"4","insertions":"5","path":"src/library/base/man/str.Rd"}]
-		int deletions = 0;
-		int insertions = 0;
-		int net = 0;
-		for(json::iterator path = paths.begin(); path != paths.end(); ++path)
-		{
-			deletions += atoi((*path)["deletions"].get<std::string>().c_str());
-			insertions += atoi((*path)["insertions"].get<std::string>().c_str());
-
-			net += insertions;
-			net -= deletions;
-		}
-
-		(*commit)["deletions"] = deletions;
-		(*commit)["insertions"] = insertions;
-		(*commit)["net"] = net;
+		string author = (*commit)["author"].get<string>();
+		author = author.substr(0, author.find_first_of('<') - 1);
+		(*commit)["author"] = author;
 	}
 
 	cout << setw(4) << commits << endl;
