@@ -1,18 +1,20 @@
 ---
-title: 'R & R'
+title: "R & R"
 author: "Jacob Oursland & Elijah Grimshaw"
 date: "February 14, 2017"
-output: beamer_presentation
+output:
+  ioslides_presentation: default
+  beamer_presentation: default
 ---
 
 ```{r, include=FALSE}
-orig <- jsonlite::fromJSON("r-commits.json", simplifyDataFrame=TRUE)
-edit <- orig
-df <- orig
-
 require(jsonlite)
 require(parsedate)
 require(lubridate)
+
+orig <- jsonlite::fromJSON("r-commits.json", simplifyDataFrame=TRUE)
+edit <- orig
+df <- orig
 
 for (i in 50455:1) {
   edit[50456-i,2] <- i
