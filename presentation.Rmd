@@ -1,0 +1,75 @@
+---
+title: 'R & R'
+author: "Jacob Oursland & Elijah Grimshaw"
+date: "February 14, 2017"
+output: beamer_presentation
+---
+
+```{r, include=FALSE}
+orig <- jsonlite::fromJSON("r-commits.json", simplifyDataFrame=TRUE)
+edit <- orig
+df <- orig
+
+require(jsonlite)
+require(parsedate)
+require(lubridate)
+
+for (i in 50455:1) {
+  edit[50456-i,2] <- i
+}
+
+edit$date <- as_date(edit$date)
+df$date <- parse_date(df$date)
+auth <- table(edit$author)
+
+```
+
+##Inspiration
+
+[**Video**](gource.mp4)
+
+## Collecting the Data
+
+1. Clone the R source git repository: [**https://github.com/wch/r-source**](https://github.com/wch/r-source)
+2. Use a script that parses `git --log` into a JSON file that contains each commit, the author, date, paths modified, and lines changed to each file.
+3. Use R on R!
+
+##Commits Over Time
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+plot(edit$commit ~ edit$date, xlab="Year", ylab="Commits")
+abline(lm(edit$commit ~ edit$date), col="red")
+```
+
+##Size of Commits over Time
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+plot(df$net~df$date, xlab ="Year", ylab="Lines Change")
+```
+
+##Overview
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+plot(edit[,-c(1,6,8)])
+```
+
+##Commits per Author
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+require(lattice)
+barchart(auth, xlab="Commits", ylab="Authors", cex.axis=.60, las=2)
+```
+
+
+##Commit Sizes for Author
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+with(edit, bwplot(author~log10(abs(net)), xlab="Order of Change"))
+```
+
+##Conclusions
+
+1. R is maintained by a core team, of which there are only about 4 major contributors.
+2. Most large commits (features?) are by those 4 major contributors.
+3. The other contributors are primarily involved in smaller commits (bugfixes?).
+
+##Further Exploration
+
+1. Whose code experiences rapid turnover?
+2. For each author, what are the statistics on average cyclomatic complexity index of their code?
+3. Are 1 and 2 correlated?
