@@ -22,6 +22,7 @@ the source code commits to JSON, recording the author, date, paths
 modified, and lines added and removed.  This process was performed by
 a script that converts the output of **git log** to JSON.
 
+<!---
 Example **git log** entry:
 
     commit 4c3f25fd118abb2c7092cfa27c67f5e2485860ab
@@ -52,7 +53,7 @@ Resulting JSON entry:
         }
       ]
     },
-
+--->
 
 The resulting JSON files were processed using a custom C++ program to
 compute a total lines added and removed (instead of a per-file lines
@@ -85,7 +86,6 @@ Using the jsonlite package to import the JSON dataset, we investigated
 the total number of commits, each author's contributions, and the
 sizes of contributions each author made.
 
-
 ## Rate of Commits
 
 We began investigating the rate of commits, expecting to see a rapid
@@ -100,19 +100,32 @@ not language changes.
 \
 
 
+### Commit Sizes Over Time
+
+Next we investigated if we could identify major features and code
+changes by looking at commit sizes over time.  One major event that
+caught our attention took place in 2004 in which 5 million lines of
+code were deleted and then added in the next commit.  It was tracked
+down to a code restructuring when implementing 64-bit support.
+
+![R Commit Sizes Over Time](r-commit-sizes-over-time.png)
+\
+
+
 ## Author's Contributions
 
 We looked at the contributions of each author to see if we could
 identify who were the major committers, and if they could be divided
 between feature developers and bugfix developers.
+\
 
 
 ### Number of Commits
 
-As demonstrated by Figure 3, the vast majority of changes to R are
-committed by only a few developers.  Most commits are small, implying
-that they are likely to be bugfixes or small changes to existing
-functionality, not new features.
+As demonstrated by in the next figure, the vast majority of changes to
+R are committed by only a few developers.  Most commits are small,
+implying that they are likely to be bugfixes or small changes to
+existing functionality, not new features.
 
 ![R Authors and Number of Commits](r-authors.png)
 \
@@ -120,10 +133,10 @@ functionality, not new features.
 
 ### Commit Sizes
 
-Figure 4 shows that the same developers who commit the most tend to
-make the largest commits.  This implies that the regular developers
-are also the developers who have implemented the major language
-features.
+The next figure shows that the same developers who commit the most
+tend to make the largest commits.  This implies that the regular
+developers are also the developers who have implemented the major
+language features.
 
 ![R Authors and Commit Sizes](r-authors-and-commit-sizes.png)
 \
